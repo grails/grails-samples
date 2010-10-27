@@ -20,6 +20,8 @@
             <exclude org="org.springframework" module="spring-instrument-classloading" name="*" type="*" ext="*" conf="" matcher="exact"/>
             <exclude org="javax.validation" module="com.springsource.javax.validation" name="*" type="*" ext="*" conf="" matcher="exact"/>
         </dependency>
+        <dependency org="taglibs" name="standard" rev="1.1.2" conf="runtime"/>
+        <dependency org="jstl" name="jstl" rev="1.1.2" conf="runtime"/>
         <dependency org="org.hibernate" name="hibernate-jmx" rev="3.3.1.GA" conf="runtime"/>
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.5.8" conf="runtime"/>
         <dependency org="net.sf.ehcache" name="ehcache-core" rev="1.7.2" conf="runtime">
