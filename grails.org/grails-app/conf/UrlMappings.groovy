@@ -12,7 +12,10 @@ class UrlMappings {
         "/Plugins"(controller: "plugin")
         "/plugins"(controller: "plugin", action: "home")
         "/plugins/forum"(controller: "plugin", action: "forum")
-        "/plugin/$name"(controller: "plugin", action:"show")
+        "/plugin/$name"(controller: "plugin") {
+            action = [ GET: "show", PUT: "update" ]
+            parseRequest = true
+        }
         "/plugin/home"(controller: "plugin", action:"home")
         "/plugin/search"(controller: "plugin", action:"search")
         "/plugin/list"(controller: "plugin", action:"list")
@@ -72,6 +75,20 @@ class UrlMappings {
 
         if (Environment.current == Environment.TEST) {
             "/test/fixtures/$action"(controller: "fixtures")
+
+            // URL for plugin descriptors
+            "/test/plugins/$name/$file"(controller: "fixtures", action: "pluginData") {
+                constraints {
+                    file(matches: /.+-plugin.xml/)
+                }
+            }
+
+            // URL for plugin POMs
+            "/test/plugins/$name/$file"(controller: "fixtures", action: "pomData") {
+                constraints {
+                    file(matches: /.+\.pom/)
+                }
+            }
         }
 
         "500"(controller: 'error', action: "serverError")

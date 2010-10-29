@@ -32,11 +32,6 @@ grails.views.gsp.encoding="UTF-8"
 grails.converters.encoding="UTF-8"
 grails.app.context = "/"
 
-// Load GSPs from external location so that they can easily be updated. The
-// actual location of the views is specified in the site-config.properties
-// file - see the beginning of this file for its location.
-grails.gsp.enable.reload = true
-
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
 
@@ -56,32 +51,43 @@ environments {
     }
 }
 
+/*
+security.shiro.filter.config = """\
+[main]
+myAuth = org.grails.auth.RestBasicAuthFilter
+myAuth.applicationName = grails.org
+
+[urls]
+/plugin/** = myAuth[POST;PUT;DELETE]
+"""
+*/
+
 springcache {
-	disabled = true
+    disabled = true
     defaults {
         // set default cache properties that will apply to all caches that do not override them
         eternal = false
         diskPersistent = false
-		overflowToDisk = false
+        overflowToDisk = false
     }
     caches {
         contentCache {
             // set any properties unique to this cache
             timeToLive = 300
-        	diskPersistent = false
-			overflowToDisk = false
+            diskPersistent = false
+            overflowToDisk = false
         }
         pluginCache {
             // set any properties unique to this cache
             timeToLive = 300
-        	diskPersistent = false
-			overflowToDisk = false
+            diskPersistent = false
+            overflowToDisk = false
         }
         downloadCache {
             // set any properties unique to this cache
             timeToLive = 300
-        	diskPersistent = false
-			overflowToDisk = false
+            diskPersistent = false
+            overflowToDisk = false
         }
     }
 }
@@ -89,7 +95,7 @@ springcache {
 format.date = 'MMM d, yyyy'
 screencasts.page.layout="subpage"
 blog.page.layout="subpage"
-blog.author.evaluator= {
+grails.blog.author.evaluator= {
 	request.user
 }
 
@@ -103,5 +109,4 @@ log4j = {
 	   'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
 	   'org.springframework',
 	   'org.hibernate'
-
 }

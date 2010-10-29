@@ -10,7 +10,10 @@ grails.project.dependency.resolution = {
         grailsPlugins()
         grailsHome()
         grailsCentral()
+        mavenCentral()
         mavenRepo "http://repository.codehaus.org"
+        mavenRepo "http://maven.springframework.org/milestone"
+        mavenRepo "http://snapshots.repository.codehaus.org"
     }
 
     plugins {
@@ -20,7 +23,7 @@ grails.project.dependency.resolution = {
                 ":commentable:0.7.5",
                 ":feeds:1.5",
                 ":grails-ui:1.2-SNAPSHOT",
-                ":hibernate:1.3.4",
+                ":hibernate:1.3.5",
                 ":mail:0.5",
                 ":pretty-time:0.3",
                 ":quartz:0.4.2",
@@ -29,26 +32,29 @@ grails.project.dependency.resolution = {
                 ":screencasts:0.4",
                 ":searchable:0.5.5.1",
                 ":shiro:1.1-SNAPSHOT",
-                ":simple-blog:0.1.3",
-                ":springcache:1.2",
+                ":simple-blog:0.1.5",
+//                ":springcache:1.2",
+                ":spring-events:1.0",
                 ":taggable:0.6.2",
                 ":yui:2.7.0.1"
         
         test    ":build-test-data:1.1.1",
                 ":fixtures:1.0.1",
-                ":geb:0.4",
-                ":spock:0.5-groovy-1.7-SNAPSHOT"
+                ":geb:0.5-SNAPSHOT",
+                ":spock:0.5-groovy-1.7-SNAPSHOT", {
+            excludes 'xml-apis'
+        }
 
         build   ":db-util:0.4",
-                ":tomcat:1.3.4"
+                ":tomcat:1.3.5"
     }
 
     dependencies {
         test    "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
-            excludes "commons-logging", "httpclient"
+            excludes "commons-logging", "httpclient", "xml-apis", "groovy"
         }
         test    "org.seleniumhq.selenium:selenium-htmlunit-driver:latest.integration", {
-            excludes "htmlunit"
+            excludes "htmlunit", "xml-apis"
         }
         test    "net.sourceforge.htmlunit:htmlunit:2.8", {
             excludes "xml-apis", "commons-logging"
@@ -56,3 +62,5 @@ grails.project.dependency.resolution = {
     }
 
 }
+
+grails.tomcat.jvmArgs = [ '-Xmx512m', '-XX:MaxPermSize=256m' ]

@@ -3,9 +3,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <g:javascript src="common/application.js"/>
-	<g:render template="/content/analytics" />
-    
     <link rel="stylesheet" href="${resource(dir: 'css/new', file: 'master.css')}" type="text/css" />
     <link rel="stylesheet" href="${resource(dir: 'css/new', file: 'homepage.css')}" type="text/css" />
 	<!--[if IE]>
@@ -187,10 +184,10 @@
                     <div class="right">
             			<h3>Community</h3>
 						<p>
-Get involved! Grails has a vibrant and buzzing community. You can grab the <a href="http://github.com/grails/grails/tree/master">source code</a> from Github, report issues on the Grails  <a href="http://jira.codehaus.org/browse/GRAILS">JIRA issue tracker</a>, participate at the <a href="http://grails.org/Mailing+lists">mailing lists</a> or <a href="http://grails.1312388.n4.nabble.com/Grails-user-f1312389.html">Nabble forums</a> or catch-up on the latest news on the <g:link controller="blog" action="home">Grails blog</g:link>.							
+Get involved! Grails has a vibrant and buzzing community. You can grab the <a href="http://github.com/grails/grails-core">source code</a> from GitHub, report issues on the Grails  <a href="http://jira.codehaus.org/browse/GRAILS">JIRA issue tracker</a>, participate at the <a href="http://grails.org/Mailing+lists">mailing lists</a> or <a href="http://grails.1312388.n4.nabble.com/Grails-user-f1312389.html">Nabble forums</a> or catch-up on the latest news on the <g:link controller="blog" action="list">Grails blog</g:link>.							
 <br></br><br></br>
 
-The whole Grails site is written in Grails <g:meta name="app.grails.version" /> and is an open wiki,  the <a href="http://github.com/grails/grails/tree/6590710d84f1167031be8399c5cc8ce0b0982ba3/grails-samples/grails.org">source code</a> for which is available from Github.
+The whole Grails site is written in Grails <g:meta name="app.grails.version" /> and is an open wiki,  the <a href="http://github.com/grails/grails-samples/tree/master/grails.org">source code</a> for which is available from Github.
 Visit the Grails <g:link controller="content" id="Community">community pages</g:link> for more ways to participate. 
 						</p>
                     </div><!-- right column -->
@@ -210,5 +207,7 @@ Visit the Grails <g:link controller="content" id="Community">community pages</g:
     </div><!-- center -->
 </div><!-- footer -->
 
+    <%-- Google Analytics --%>
+    <g:render template="/content/analytics" />
 </body>
 </html>

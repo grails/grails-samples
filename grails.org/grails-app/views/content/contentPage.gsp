@@ -1,10 +1,8 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<g:setProvider library="yui"/>
+
 <head>
     <title>${content?.title}</title>
     <meta content="subpage" name="layout" />
-    <link rel="stylesheet" href="${resource(dir:'css',file:'content.css')}" />
-    <g:javascript library="diff_match_patch" />
-    <g:javascript library="scriptaculous" />
     <g:render template="wikiJavaScript"/>
 	<style type="text/css" media="screen">
 		body {
@@ -13,13 +11,15 @@
 		}
 		
 	</style>
-
 </head>
 <body>
     <div id="contentPane">
         <div id="wikiLastUpdated">Last updated by ${latest?.author?.login} <prettytime:display date="${content.lastUpdated}"/></div>
         <g:render template="viewActions" model="[content:content]" />
         <div id="editPane" style="margin-top:10px;">
+            <g:if test="${ content?.deprecated }">
+                <wiki:deprecated uri="${ content?.deprecatedUri }"/>
+            </g:if>
             <wiki:text key="${content?.title}">
                 ${content?.body}
             </wiki:text>

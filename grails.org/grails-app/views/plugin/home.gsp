@@ -5,23 +5,17 @@
     <rateable:resources />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'ratings.css')}"/>
 
-    <title>Grails Plugins</title>
-    <meta content="pluginLayout" name="layout"/>
+    <title>Plugins Portal</title>
+    <meta content="pluginNav" name="layout"/>
 </head>
 <body>
-
-<g:applyLayout name="pluginNav">
-	<div id="currentPlugins">
-		<g:each var="plugin" in="${currentPlugins}">
-			<tmpl:pluginPreview plugin="${plugin}" />
-		</g:each>
-	</div>
-	<div id="paginationPlugins">
-		<g:paginate total="${totalPlugins}" params="[category:category]" next="&gt;" prev="&lt;"></g:paginate>
-	</div>
-</g:applyLayout>
-
-
-
+    <div id="currentPlugins">
+        <g:each var="plugin" in="${currentPlugins}">
+            <tmpl:pluginPreview plugin="${plugin}" />
+        </g:each>
+    </div>
+    <div id="paginationPlugins">
+        <g:paginate total="${totalPlugins}" params="[category:category]" next="&gt;" prev="&lt;"></g:paginate>
+    </div>
 </body>
 </html>
