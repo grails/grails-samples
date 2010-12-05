@@ -135,6 +135,7 @@
                 </div><!-- latestNews -->
             
                 <div id="screencasts">
+                    <%--
                     <h2>Conference</h2>
                     <div class="castBox">
                         <div class="advert">
@@ -143,7 +144,7 @@
                             </a>
                         </div>
                     </div>
-                    <%--
+                    --%>
                     <h2>Recent Screencasts</h2>
                     <div class="castBox">
                         <div class="castScreen">
@@ -153,7 +154,6 @@
                         </div><!-- castScreen -->
                         <h4><g:link controller="screencast" action="list">View All</g:link></h4>
                     </div><!-- castBox -->
-                    --%>
                 </div><!-- screencasts -->
             </div><!-- newsScreencastWrapper -->
             
