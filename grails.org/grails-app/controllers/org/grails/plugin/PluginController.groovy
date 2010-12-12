@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse
 
 import org.apache.shiro.SecurityUtils
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.codehaus.groovy.grails.web.mapping.UrlMappingsHolder
 import org.codehaus.groovy.grails.web.metaclass.RedirectDynamicMethod
 import org.codehaus.groovy.grails.web.servlet.HttpHeaders
 import org.grails.auth.Role
@@ -14,20 +15,22 @@ import org.grails.taggable.*
 import org.grails.tags.TagNotFoundException
 import org.grails.wiki.BaseWikiController
 import org.grails.wiki.WikiPage
+import org.grails.wiki.WikiPageService
 import org.springframework.web.context.request.RequestContextHolder
 
 import net.sf.ehcache.Element
 
+@Typed(TypePolicy.MIXED)
 class PluginController extends BaseWikiController {
 
     static String HOME_WIKI = 'PluginHome'
     static int PORTAL_MAX_RESULTS = 5
     static int PORTAL_MIN_RATINGS = 1
     
-    def wikiPageService
-    def pluginService
-    def commentService
-    def grailsUrlMappingsHolder
+    WikiPageService wikiPageService
+    PluginService pluginService
+    CommentService commentService
+    UrlMappingsHolder grailsUrlMappingsHolder
 
     def index = {
         redirect(controller:'plugin', action:'home', params:params)
@@ -61,10 +64,20 @@ class PluginController extends BaseWikiController {
                 if (category) args << category
                 args << queryParams
 
-                (currentPlugins, totalPlugins) = pluginService.searchWithTotal(*args)
+                def r
+                if (category) {
+                    r = pluginService.searchWithTotal(params.q, category, queryParams)
+                }
+                else {
+                    r = pluginService.searchWithTotal(params.q, queryParams)
+                }
+                currentPlugins = r[0]
+                totalPlugins = r[1]
             }
             else {
-                (currentPlugins, totalPlugins) = pluginService."list${category.capitalize()}PluginsWithTotal"(queryParams)
+                def r = pluginService."list${category.capitalize()}PluginsWithTotal"(queryParams)
+                currentPlugins = r[0]
+                totalPlugins = r[1]
             }
         }
         catch (MissingMethodException ex) {
@@ -73,15 +86,15 @@ class PluginController extends BaseWikiController {
             return
         }
 
+        if (currentPlugins == null) currentPlugins = []
+
         withFormat {
             html {
                 [currentPlugins:currentPlugins, category:category,totalPlugins:totalPlugins]
             }
             json {
                 render(contentType:"text/json") {
-                    plugins = currentPlugins?.collect { p ->
-                        return { name = p.name; title = p.title }
-                    } ?: []
+                    plugins = currentPlugins?.collect { p -> {-> name = p.name; title = p.title } }
                 }
             }
             xml {
@@ -102,8 +115,9 @@ class PluginController extends BaseWikiController {
         params.sort = "name"
         params.order = "asc"
 
-        def (currentPlugins, totalPlugins) = pluginService.listAllPluginsWithTotal(params)
-        currentPlugins = currentPlugins.groupBy { it.name ? it.name[0].toUpperCase() : 'A' }
+        def r = pluginService.listAllPluginsWithTotal(params)
+        currentPlugins = r[0]//.groupBy { it.name ? it.name[0].toUpperCase() : 'A' }
+        totalPlugins = r[1]
 
         return [currentPlugins: currentPlugins, totalPlugins: totalPlugins]
     }
@@ -168,7 +182,7 @@ class PluginController extends BaseWikiController {
             }
 
             // Default to it not being a snapshot release if 'isSnapshot' is not provided.
-            publishEvent(new PluginUpdateEvent(this, data.name, data.version, data.group, data.isSnapshot ?: false, uri))
+            publishEvent(new PluginUpdateEvent(this, data.name, data.version, data.group, data.isSnapshot ? true : false, uri))
 
             render contentType: "application/json", {
                 message = "OK"

@@ -2,25 +2,31 @@ package org.grails
 
 import grails.plugin.springcache.annotations.*
 import javax.servlet.ServletContext
+import net.sf.ehcache.Cache
+
 import org.springframework.web.multipart.MultipartFile
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.grails.wiki.WikiPage
+import org.grails.wiki.WikiPageService
 import org.grails.content.Version
 import org.grails.content.notifications.ContentAlertStack
 import org.grails.wiki.BaseWikiController
 import org.grails.plugin.Plugin
+import org.grails.plugin.PluginService
 import org.grails.content.Content
 import org.grails.plugin.PluginController
 import org.grails.screencasts.Screencast
+import org.grails.screencasts.ScreencastService
 import org.grails.blog.BlogEntry
+import org.grails.util.DateService
 
+@Typed(TypePolicy.MIXED)
 class ContentController extends BaseWikiController {
-
-    def screencastService
-    def pluginService
-    def dateService
-    def textCache
-    def wikiPageService
+    ScreencastService screencastService
+    PluginService pluginService
+    DateService dateService
+    Cache textCache
+    WikiPageService wikiPageService
 
     ContentAlertStack contentToMessage
 
