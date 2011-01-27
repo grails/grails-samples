@@ -8,6 +8,7 @@ import org.grails.taggable.Tag
 import org.grails.taggable.TagLink
 import org.grails.wiki.WikiPage
 
+@Typed(TypePolicy.MIXED)
 class PluginService {
 
     static int DEFAULT_MAX = 5
@@ -44,11 +45,11 @@ class PluginService {
 
     def listPopularPluginsWithTotal(Map args = [max: 200]) {
         // The Rateable plugin's query only accepts pagination arguments.
-        def params = [:]
+        def params = [cache: true]
         if (args["max"] != null) params["max"] = args["max"]
         if (args["offset"] != null) params["offset"] = args["offset"]
         return [
-                Plugin.listOrderByAverageRating(cache:true, *:params),
+                Plugin.listOrderByAverageRating(params),
                 Plugin.countRated() ]
     }
 
@@ -82,7 +83,8 @@ class PluginService {
             result << TagLink.countByTagAndType(tag, 'plugin')
         }
         else {
-            result << [] << 0
+            result << []
+            result << 0
         }
 
         return result
@@ -92,6 +94,7 @@ class PluginService {
         translateMasterPlugins(generateMasterPlugins())
     }
     
+    @Typed(TypePolicy.DYNAMIC)
     def generateMasterPlugins() {
         try {
             def pluginLoc = ConfigurationHolder.config?.plugins?.pluginslist
@@ -273,6 +276,7 @@ class PluginService {
         v1Num.compareTo(v2Num)
     }
 
+    @Typed(TypePolicy.DYNAMIC)
     def getGrailsVersion(plugin) {
         def xmlLoc = "${ConfigurationHolder.config?.plugins?.location}/grails-${plugin.name}/tags/LATEST_RELEASE/plugin.xml"
         def xmlUrl = new URL(xmlLoc)
@@ -395,7 +399,7 @@ class PluginService {
             return [sort: "lastReleased", order: "desc"] 
 
         default:
-            return ""
+            return [:]
         }
     }
 

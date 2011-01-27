@@ -348,8 +348,8 @@ class PluginController extends BaseWikiController {
         try {
             def maxResults = params.int('max') ?: 10
             def offset = params.int('offset') ?: 0
-            def (plugins, pluginCount) = pluginService.listPluginsByTagWithTotal(params.tagName, max: maxResults, offset: offset)
-            return [currentPlugins: plugins, totalPlugins: pluginCount, tagName:params.tagName, max: maxResults, offset: offset]
+            def result = pluginService.listPluginsByTagWithTotal(params.tagName, max: maxResults, offset: offset)
+            return [currentPlugins: result[0], totalPlugins: result[1], tagName:params.tagName, max: maxResults, offset: offset]
         }
         catch (TagNotFoundException ex) {
             render view: "tagNotFound", model: [tagName: ex.tagName ?: '', msgCode: ex.code]
